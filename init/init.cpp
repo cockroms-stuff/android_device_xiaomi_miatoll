@@ -31,7 +31,6 @@ using android::base::GetProperty;
 std::vector<std::string> ro_props_default_source_order = {
     "",
     "odm.",
-    "product.",
     "system.",
     "vendor.",
     "system_ext.",
@@ -41,11 +40,7 @@ void set_ro_build_prop(const std::string &source, const std::string &prop,
         const std::string &value, bool product = false) {
     std::string prop_name;
 
-    if (product) {
-        prop_name = "ro.product." + source + prop;
-    } else {
         prop_name = "ro." + source + "build." + prop;
-    }
 
     property_override(prop_name.c_str(), value.c_str(), false);
 }
@@ -59,6 +54,11 @@ void set_device_props(const std::string fingerprint, const std::string descripti
         set_ro_build_prop(source, "model", model, true);
     }
 
+    property_override("ro.product.system.brand", "google");
+    property_override("ro.product.system.device", "generic");
+    property_override("ro.product.system.manufacturer", "Google");
+    property_override("ro.product.system.model", "mainline");
+    property_override("ro.product.system.name", "mainline");
     property_override("ro.build.fingerprint", fingerprint.c_str());
     property_override("ro.build.description", description.c_str());
 }
@@ -73,6 +73,7 @@ void load_device_properties() {
                     "google/redfin/redfin:11/RQ1A.210105.003/7005429:user/release-keys",
                     "redfin-user 11 RQ1A.210105.003 7005429 release-keys",
                     "Redmi", "curtana", "Redmi Note 9S");
+            property_override("ro.product.device", "Redmi Note 9S");
             property_override("ro.build.version.security_patch", "2021-01-05");
             property_override("ro.vendor.build.security_patch", "2021-01-05");
         } else if (region == "India") {
@@ -80,6 +81,7 @@ void load_device_properties() {
                     "google/redfin/redfin:11/RQ1A.210105.003/7005429:user/release-keys",
                     "redfin-user 11 RQ1A.210105.003 7005429 release-keys",
                     "Redmi", "curtana", "Redmi Note 9 Pro");
+            property_override("ro.product.device", "Redmi Note 9 Pro");
             property_override("ro.build.version.security_patch", "2021-01-05");
             property_override("ro.vendor.build.security_patch", "2021-01-05");
         }
@@ -88,6 +90,7 @@ void load_device_properties() {
                 "google/redfin/redfin:11/RQ1A.210105.003/7005429:user/release-keys",
                 "redfin-user 11 RQ1A.210105.003 7005429 release-keys",
                 "Redmi", "excalibur", "Redmi Note 9 Pro Max");
+        property_override("ro.product.device", "Redmi Note 9 Pro Max");
         property_override("ro.build.version.security_patch", "2021-01-05");
         property_override("ro.vendor.build.security_patch", "2021-01-05");
     } else if (hwname == "gram") {
@@ -95,6 +98,7 @@ void load_device_properties() {
                 "google/redfin/redfin:11/RQ1A.210105.003/7005429:user/release-keys",
                 "redfin-user 11 RQ1A.210105.003 7005429 release-keys",
                 "POCO", "gram", "POCO M2 Pro");
+        property_override("ro.product.device", "POCO M2 Pro");
         property_override("ro.build.version.security_patch", "2021-01-05");
         property_override("ro.vendor.build.security_patch", "2021-01-05");
     } else if (hwname == "joyeuse") {
@@ -102,6 +106,7 @@ void load_device_properties() {
                 "google/redfin/redfin:11/RQ1A.210105.003/7005429:user/release-keys",
                 "redfin-user 11 RQ1A.210105.003 7005429 release-keys",
                 "Redmi", "joyeuse", "Redmi Note 9 Pro");
+        property_override("ro.product.device", "Redmi Note 9 Pro");
         property_override("ro.build.version.security_patch", "2021-01-05");
         property_override("ro.vendor.build.security_patch", "2021-01-05");
     }
