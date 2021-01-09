@@ -14,6 +14,7 @@
 
 $(call inherit-product, device/xiaomi/miatoll/device.mk)
 $(call inherit-product, vendor/fluid/config/common_full_phone.mk)
+$(call inherit-product-if-exist, vendor/GoogleCamera/config.mk)
 
 # Bootanimation Resolution
 TARGET_BOOT_ANIMATION_RES := 1080
@@ -30,7 +31,29 @@ TARGET_INCLUDE_GAPPS := true
 TARGET_GAPPS_ARCH := arm64
 DISABLE_DEFAULT_CAMERA := true
 TARGET_SUPPORTS_GOOGLE_RECORDER := true
-FLUID_BUILD_TYPE := OFFICIAL
+
+
+
+ifeq ($(WITH_GAPPS),true)
+TARGET_INCLUDE_GAPPS := true
+TARGET_GAPPS_ARCH := arm64
+TARGET_SUPPORTS_GOOGLE_RECORDER := true
+TARGET_INCLUDE_AOSP_REPLACEMENTS := true
+else
+TARGET_INCLUDE_GAPPS := false
+PRODUCT_PACKAGES += \
+    Dialer \
+    Messaging \
+    Browser2 \
+    Gallery2
+endif
+
+# FLUID STUFF
+FLUID_BUILD_TYPE := CXCKRXMS
 PRODUCT_PRODUCT_PROPERTIES += \
-  ro.fluid.maintainer=Ramisky \
-  ro.fluid.cpu=SDM720G
+    ro.fluid.maintainer=clownless \
+    ro.fluid.cpu=SDM720G
+
+# APNs
+PRODUCT_COPY_FILES += \
+    vendor/fluid/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
